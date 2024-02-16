@@ -46,7 +46,7 @@ const parsedGames = parsePgnToJson(pgnData);
 const finalData = JSON.stringify(parsedGames, null, 2)
     setGames(finalData);
     console.log("test",response.data);
-    console.log("game is",games);
+    console.log("Final data is", finalData)
     
    
   
@@ -61,7 +61,7 @@ const finalData = JSON.stringify(parsedGames, null, 2)
   useEffect(() => {
     // Fetch initial data when the component mounts
     
-  }, []);
+  }, [games]);
 
   return (
     <div className="App">
@@ -74,7 +74,7 @@ const finalData = JSON.stringify(parsedGames, null, 2)
     />
    
     <button onClick={() => handleSearch(searchQuery)}>Search</button>
-    {Array.isArray(games) && games.length > 0 && games.map((e) => <GameDetails key={e.id} gameDetails={e} />)}
+    {Array.isArray(games) && games.length > 0 && games.map((e) => <GameDetails key={e} gameDetails={e} />)}
    
 
 
