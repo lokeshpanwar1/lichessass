@@ -35,22 +35,22 @@ function App() {
   const [selectedGame, setSelectedGame] = useState(null);
 
   const handleSearch = async (username) => {
-    const response = await axios.get(`https://lichess.org/api/games/user/${username}`, {
-  headers: {
-    'Content-Type': 'application/x-ndjson',
-  },
-});
-   
-const pgnData = response.data;
-const parsedGames = parsePgnToJson(pgnData);
-const finalData = JSON.stringify(parsedGames, null, 2)
-    setGames(finalData);
-    console.log("test",response.data);
-    console.log("Final data is", finalData)
-    
-   
+    try {
+      const response = await axios.get(`https://lichess.org/api/games/user/${username}`, {
+        headers: {
+          'Content-Type': 'application/x-ndjson',
+        },
+      });
   
+      const pgnData = response.data;
+      const parsedGames = parsePgnToJson(pgnData);
+      setGames(parsedGames);
+      console.log("Parsed Games", parsedGames);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
+  
 
   const handleGameClick = (gameId) => {
     // Fetch game details using the game ID and update the state
@@ -59,7 +59,7 @@ const finalData = JSON.stringify(parsedGames, null, 2)
   };
 
   useEffect(() => {
-    // Fetch initial data when the component mounts
+    
     
   }, [games]);
 
@@ -74,8 +74,10 @@ const finalData = JSON.stringify(parsedGames, null, 2)
     />
    
     <button onClick={() => handleSearch(searchQuery)}>Search</button>
-    {Array.isArray(games) && games.length > 0 && games.map((e) => <GameDetails key={e} gameDetails={e} />)}
-   
+    {Array.isArray(games) && games.length > 0 && games.map((game, index) => (
+  index % 2 === 0 && <GameDetails key={index} gameDetails={game} />
+))}
+
 
 
   </div>
